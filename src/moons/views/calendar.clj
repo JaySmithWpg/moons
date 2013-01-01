@@ -1,4 +1,4 @@
-(ns moons.views.illeiya
+(ns moons.views.calendar
   (:require [moons.views.common :as common])
   (:use [noir.core :only [defpage defpartial]]
         [hiccup.element :only [image]]
