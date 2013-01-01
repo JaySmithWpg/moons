@@ -17,7 +17,7 @@
   (image (format (:image-path moon)
                  (mod day-since-epoch (:cycle-length moon)))))
 
-(defn get-day [day-since-epoch]
+(defn get-day [day-since-epoch days-in-month]
   (let [day-of-month (inc (mod day-since-epoch days-in-month))]
     (html [:span
            [:h3 day-of-month]
@@ -36,15 +36,16 @@
         days-in-year (* (:days-in-month calendar) (:months-in-year calendar))
         start-date (+ (* year days-in-year) (* (dec month) days-in-month))]
     (common/layout
-      [:div
+      [:header
        [:h1 (:title calendar)]
        [:h2 "Year " year " Month " month]]
-      [:div
+      [:nav
        (form-to [:get (str "/" (:path calendar)) ]
                (nav-controls year month calendar)
                (submit-button "Go"))]
-      [:div
-       (map get-day (range start-date (+ start-date days-in-month)))])))
+      [:section
+       (map #(get-day % days-in-month)
+            (range start-date (+ start-date days-in-month)))])))
 
 (defpage "/:calendar" {:keys [calendar year month]}
   (render-calendar (first (filter #(= calendar (:path %)) calendars))
