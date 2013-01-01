@@ -4,6 +4,6 @@ pom.xml
 /classes/
 .lein-deps-sum
 .cake
-.swp
-.clj~
-.css~
+*.swp
+*.clj~
+*.css~
