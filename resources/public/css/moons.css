@@ -1,0 +1,19 @@
+body
+{
+	background:white;
+}
+
+span
+{
+	background:black;
+	color:white;
+	border:2px solid black;
+	margin:2px;
+	padding:2px;
+	float:left;
+}
+
+img
+{
+	margin:1px;
+}
