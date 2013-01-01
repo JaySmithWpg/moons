@@ -1,0 +1,46 @@
+(ns moons.views.illeiya
+  (:require [moons.views.common :as common])
+  (:use [noir.core :only [defpage defpartial]]
+        [hiccup.core]
+        [hiccup.form]))
+
+(def days-in-year 360)
+(def days-in-month 30)
+(def months-in-year 12)
+(def illeiya-cycle 11)
+(def mneme-cycle 7)
+
+(defn get-day [day-since-epoch]
+  (let [illeiya-phase (mod day-since-epoch illeiya-cycle)
+        mneme-phase (mod day-since-epoch mneme-cycle)
+        day-of-month (inc (mod day-since-epoch days-in-month))]
+    (html [:span
+           [:h3 day-of-month]
+           [:p "Illeiya: " (/ illeiya-phase illeiya-cycle)]
+           [:p "Mneme: " (/ mneme-phase mneme-cycle)]])))
+
+(defpartial nav-controls []
+  (label "year" "Year: ")
+  (drop-down "year" (range 0 3001))
+  (label "month" "Month: ")
+  (drop-down "month" (range 1 (inc months-in-year))))
+
+(defpartial render-illeiya [year month]
+  (let [start-date (+ (* (Integer. year) days-in-year)
+                      (* (dec (Integer. month)) days-in-month))]
+    (common/layout
+      [:div
+       [:h1 "Illeiyan Calendar"]
+       [:h2 "Year " year " Month " month]]
+      [:div
+       (form-to [:get "/Illeiya"]
+               (nav-controls)
+               (submit-button "Go"))] 
+      [:div
+       (map get-day (range start-date
+                           (+ start-date days-in-month)))])))
+
+(defpage "/Illeiya" {:keys [year month]}
+  (render-illeiya (if (= nil year) 0 year)
+                  (if (= nil month) 1 month)))
+
