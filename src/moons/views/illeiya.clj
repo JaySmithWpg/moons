@@ -25,22 +25,16 @@
 
 (defpartial nav-controls [year month calendar]
   (label "year" "Year: ")
-  (drop-down "year"
-             (range 0 3001)
-             year)
+  (drop-down "year" (range 0 3001) year)
   (label "month" "Month: ")
-  (drop-down "month"
-             (range 1 (inc (:months-in-year calendar)))
-             month))
+  (drop-down "month" (range 1 (inc (:months-in-year calendar))) month))
 
 (defpartial render-calendar [calendar year month]
   (let [year (Integer. year)
         month (Integer. month)
         days-in-month (:days-in-month calendar)
-        days-in-year (* (:days-in-month calendar)
-                        (:months-in-year calendar))
-        start-date (+ (* year days-in-year)
-                      (* (dec month) days-in-month))]
+        days-in-year (* (:days-in-month calendar) (:months-in-year calendar))
+        start-date (+ (* year days-in-year) (* (dec month) days-in-month))]
     (common/layout
       [:div
        [:h1 (:title calendar)]
