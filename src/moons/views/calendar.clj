@@ -7,7 +7,8 @@
 
 (defrecord Calendar [path title days-in-month months-in-year])
 (def calendars (list (Calendar. "Illeiya" "Illeiyan Calendar" 30 12)
-                     (Calendar. "Mneme" "Mneme Calendar" 28 13)))
+                     (Calendar. "Mneme" "Mneme Calendar" 28 13)
+                     (Calendar. "Waltz" "Moon Waltz" 140 2)))
 
 (defrecord Moon [image-path cycle-length])
 (def moons (list (Moon. "/img/Illeiya%d.png" 10)
