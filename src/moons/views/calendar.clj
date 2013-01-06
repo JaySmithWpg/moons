@@ -16,8 +16,8 @@
                      (Calendar. "Mneme" "Mneme Calendar" 28 13 moons)
                      (Calendar. "Waltz" "Moon Waltz" 140 2 moons)
                      (Calendar. "Illeiya2" "Inverse Illeiyan Calendar" 30 12 inverse-moons)
-                     (Calendar. "Mneme2" "Mneme Calendar" 28 13 inverse-moons)
-                     (Calendar. "Waltz2" "Moon Waltz" 140 2 inverse-moons)))
+                     (Calendar. "Mneme2" "Inverse Mneme Calendar" 28 13 inverse-moons)
+                     (Calendar. "Waltz2" "Inverse Moon Waltz" 140 2 inverse-moons)))
 
 (defn moon-image [moon day-since-epoch]
   (image (format (:image-path moon)
