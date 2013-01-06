@@ -5,24 +5,31 @@
         [hiccup.core]
         [hiccup.form]))
 
-(defrecord Calendar [path title days-in-month months-in-year])
-(def calendars (list (Calendar. "Illeiya" "Illeiyan Calendar" 30 12)
-                     (Calendar. "Mneme" "Mneme Calendar" 28 13)
-                     (Calendar. "Waltz" "Moon Waltz" 140 2)))
+(defrecord Moon [image-path cycle-length cycle-start])
+(def moons (list (Moon. "/img/Illeiya%d.png" 10 0)
+                 (Moon. "/img/Mneme%d.png" 28 0)))
+(def inverse-moons (list (Moon. "/img/Illeiya%d.png" 10 5)
+                         (Moon. "/img/Mneme%d.png" 28 14))) 
 
-(defrecord Moon [image-path cycle-length])
-(def moons (list (Moon. "/img/Illeiya%d.png" 10)
-                 (Moon. "/img/Mneme%d.png" 28)))
+(defrecord Calendar [path title days-in-month months-in-year moons])
+(def calendars (list (Calendar. "Illeiya" "Illeiyan Calendar" 30 12 moons)
+                     (Calendar. "Mneme" "Mneme Calendar" 28 13 moons)
+                     (Calendar. "Waltz" "Moon Waltz" 140 2 moons)
+                     (Calendar. "Illeiya2" "Inverse Illeiyan Calendar" 30 12 inverse-moons)
+                     (Calendar. "Mneme2" "Mneme Calendar" 28 13 inverse-moons)
+                     (Calendar. "Waltz2" "Moon Waltz" 140 2 inverse-moons)))
 
 (defn moon-image [moon day-since-epoch]
   (image (format (:image-path moon)
-                 (mod day-since-epoch (:cycle-length moon)))))
+                 (mod (+ day-since-epoch
+                         (:cycle-start moon))
+                      (:cycle-length moon)))))
 
-(defn get-day [day-since-epoch days-in-month]
-  (let [day-of-month (inc (mod day-since-epoch days-in-month))]
+(defn get-day [day-since-epoch calendar]
+  (let [day-of-month (inc (mod day-since-epoch (:days-in-month calendar)))]
     (html [:span
            [:h3 day-of-month]
-           (map #(moon-image % day-since-epoch) moons)])))
+           (map #(moon-image % day-since-epoch) (:moons calendar))])))
 
 (defpartial nav-controls [year month calendar]
   (label "year" "Year: ")
@@ -45,7 +52,7 @@
                (nav-controls year month calendar)
                (submit-button "Go"))]
       [:section
-       (map #(get-day % days-in-month)
+       (map #(get-day % calendar)
             (range start-date (+ start-date days-in-month)))])))
 
 (defpage "/:calendar" {:keys [calendar year month]}
